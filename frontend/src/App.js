@@ -1,7 +1,30 @@
-function App() {
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+import Header from "./components/Header";
+import Search from './components/Search';
+
+const App = () => {
+  const [word, setWord] = useState('');
+
+  const UNSPLASH_KEY = process.env.REACT_APP_UNSPLASH_KEY;
+  
+  const handleSearchSubmit = (e) =>  {
+    e.preventDefault();
+    fetch(`https://api.unsplash.com/photos/random/?query=${word}&client_id=${UNSPLASH_KEY}`)
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    setWord('');
+  }
+
   return (
     <div className="App">
-      <h1>Images Gallery</h1>
+      <Header />
+      <Search word={word} setWord={setWord} handleSubmit={handleSearchSubmit} />
     </div>
   );
 }
